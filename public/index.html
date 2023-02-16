@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Chart</title>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/sonification.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://kit.fontawesome.com/451cee5b5d.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="container"></div>
+    
+    <div style="text-align:center">
+      <button aria-label="이 버튼을 누르면 차트를 음계로 들려줘용" class="w-btn w-btn-indigo" type="button">
+        <i  onclick="play()" class="fa-sharp fa-solid fa-music fa-5x"></i>
+    </button>
+    </div>
+
+    <script>
+        var data = [  ["2023-02-01",61800],
+            ["2023-02-02",63500],
+            ["2023-02-03",63800],
+            ["2023-02-06",61600],
+            ["2023-02-07",61900],
+            ["2023-02-08",63100],
+            ["2023-02-09",63000],
+            ["2023-02-10",62800],
+            ["2023-02-13",62900],
+            ["2023-02-014",63200],
+            ["2023-02-15",62200],
+            ["2023-02-16",63400]]
+        var categories = data.map(function(item) {
+            return item[0];
+        });
+Highcharts.chart('container', {
+    // ...
+    title : {
+          text : "시각장애인을 위한 주식 차트(2월 삼성전자 종가)",  
+        },
+        xAxis: {
+                categories: categories,
+                title: {
+            text: 'Date/time',
+            align: 'high'
+        }
+            },
+    yAxis: {
+        title: {
+            text: '삼성전자 종가',
+            align: 'high',
+        }
+    },
+    series: [{
+        
+        data: data.map(function(item) {
+                    return item[1];
+                }),
+        point: {
+            events: {
+                click: function () {
+                    // Sonify the point when clicked
+                    this.sonify({
+                        instruments: [{
+                            instrument: 'triangleMajor',
+                            instrumentMapping: {
+                                volume: function (point) {
+                                    return point.color === 'red' ? 0.2 : 0.8;
+                                },
+                                duration: 200,
+                                pan: 'x',
+                                frequency: 'y'
+                            },
+                            // Start at C5 note, end at C6
+                            instrumentOptions: {
+                                minFrequency: 520,
+                                maxFrequency: 1050
+                            }
+                        }]
+                    });
+                }
+            }
+        }
+    }]
+    ,
+    categories
+});
+function play() {
+  const chart = Highcharts.charts[0];
+  const series = chart.series[0];
+  const points = series.points;
+
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i >= points.length) {
+      clearInterval(interval);
+      return;
+    }
+
+    const point = points[i];
+    point.sonify({
+      instruments: [{
+        instrument: 'triangleMajor',
+        instrumentMapping: {
+          volume: function (point) {
+            return point.color === 'red' ? 0.2 : 0.8;
+          },
+          duration: 200,
+          pan: 'x',
+          frequency: 'y'
+        },
+        // Start at C5 note, end at C6
+        instrumentOptions: {
+          minFrequency: 520,
+          maxFrequency: 1050
+        }
+      }]
+    });
+
+    i++;
+  }, 500);
+}
+
+    </script>
+</body>
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+  button {
+    margin: 20px;
+}
+
+.w-btn {
+    position: relative;
+    border: none;
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.w-btn-outline {
+    position: relative;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.w-btn-indigo {
+    background-color: aliceblue;
+    color: #1e6b7b;
+}
+
+.w-btn-indigo-outline {
+    border: 3px solid aliceblue;
+    color: #1e6b7b;
+}
+
+.w-btn-indigo-outline:hover {
+    color: #1e6b7b;
+    background: aliceblue;
+}
+.w-btn:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.w-btn-outline:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.w-btn:active {
+    transform: scale(1.5);
+}
+
+.w-btn-outline:active {
+    transform: scale(1.5);
+}
+
+</style>
+</html>
+

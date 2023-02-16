@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "bootstrap-icons": "^1.10.3",
+    "chartjs": "^0.3.24",
+    "firebase": "^9.17.1"
+  }
+}
