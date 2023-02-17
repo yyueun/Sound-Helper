@@ -1,30 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <stock-list></stock-list>
+  </div>
 </template>
 
+<script>
+import StockList from './components/StockList.vue'
+
+export default {
+  components: {StockList},
+  data() {
+    return {}
+  },
+  
+}
+</script>
+
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+div {
+  width: 320px;
+  height: 500px;
+  background-image: url('C:\Users\user\Desktop\Sound-Helper\soundhelper-vue\public\menu.JPG');
+  margin: auto;
+  display: block;
 }
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+div > button {
+  width: 15px;
+  height: 30px;
 }
 </style>
+
+
+:style="{'background-image':'url(soundhelper-vue/public/menu.JPG)'}
