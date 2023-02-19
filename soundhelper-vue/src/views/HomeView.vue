@@ -1,20 +1,29 @@
 <template>
   <div id="menu">
-    <button id="sound_mode">Sound Mode</button>
-    <stock-list></stock-list>
+    <router-link to="/stocks">
+      <button id="sound_mode" @click='goToStockList'>Sound Mode</button>
+    </router-link>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import StockList from './StockList.vue'
-
 export default {
-  components: {StockList},
-  data() {
-    return {}
-  },
-  
+  methods: {
+    goToStockList() {
+      this.$router.push('/stocks')
+    }
+  }
 }
+// import StockList from './StockList.vue'
+
+// export default {
+//   components: {StockList},
+//   data() {
+//     return {}
+//   },
+  
+// }
 </script>
 
 

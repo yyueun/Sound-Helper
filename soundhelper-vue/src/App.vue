@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <home-view></home-view>
+    <div id="app">
+        <HomeView/>
     </div>
 </template>
   
@@ -8,17 +8,25 @@
 import HomeView from './views/HomeView.vue'
 
 export default {
-    components: {HomeView},
-    data() {
-        return {}
-    },
+  name: 'App',
+  components: {
+    HomeView,
+  },
+  data() {
+    return {};
+  },
+};
+    // components: {HomeView},
+    // data() {
+    //     return {}
+    // },
 
-}
+// }
 </script>
   
   
 <style>
-div {
+#app {
     width: 320px;
     height: 568px;
 }
