@@ -11,7 +11,6 @@
 export default {
   methods: {
     goToStockList() {
-      // document.getElementById('menu').style.backgroundImage=url('soundhelper-vue\public\white.JPG');
       this.$router.push('/stocks')
     }
   }
