@@ -8,7 +8,7 @@
             <!-- 차트 -->
             <div id="chart"></div>
             <!-- 현재가 -->
-            <h3 id="current-price">38,300</h3>
+            <h4 id="current-price">38,300</h4>
             <!-- 일반모드 전환 -->  
             <button id="normal-mode">일반</button>
         </div>
@@ -44,7 +44,6 @@ export default {
 #chart {
     width: 300px;
     height: 227px;
-    position: absolute;
     top: 30px;
     left: 10px;
 }
@@ -53,6 +52,26 @@ export default {
     width: 40px;
     height: 20px;
     position: absolute;
+    top: 7px;
+    left: 7px;
+}
+
+#normal-mode {
+    width: 48px;
+    height: 48px;
+    top: 7px;
+    right: 7px;
+    position: absolute;
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+    border-radius: 12px;
 }
 
 </style>
