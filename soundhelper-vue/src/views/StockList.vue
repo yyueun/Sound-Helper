@@ -3,16 +3,27 @@
     <div>
       <!-- 상단 바 (뒤로가기, 실시간종목순위, 하트, 더보기) -->
     </div>
+    <br>
     <div id="search-container">
       <!-- 검색창 -->
       <input id="search" type="text" placeholder="검색" v-model="searchTerm" @input="search">
     </div>
+    <br>
     <div>
       <!-- 정렬 버튼  -->
       <!-- 내비게이션 바로 다시 수정하기 -->
-      <button @click="sortByMarketCap">시가총액순</button>
-      <button @click="sortByVolume">거래량순</button>
+      <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" @click="sortByMarketCap">시가총액순</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" @click="sortByVolume">거래량순</a>
+        </li>
+      </ul>
+      <!-- <button @click="sortByMarketCap">시가총액순</button>
+      <button @click="sortByVolume">거래량순</button> -->
     </div>
+    <br>
     <div>
       <!-- 주식 종목 목록 -->
       <div v-for="stock in stocks" :key="stock.id">
@@ -21,8 +32,9 @@
       </div>
     </div>
     <div>
-      <img src="C:\Users\jimin\대학교\3학년\겨울방학\신한투자증권 프로 디지털 아카데미\최종프로젝트\soundhelper-vue\public\bottomBar.png">
+      <img src="soundhelper-vue\public\bottomBar.png">
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -82,12 +94,12 @@ export default {
 #search-container {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 #search {
   width: 280px;
-  height: 50px;
+  height: 80px;
   margin: 0 auto;
 }
 

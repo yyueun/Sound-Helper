@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <HomeView/>
+        <router-view/>
     </div>
 </template>
   
@@ -16,12 +16,6 @@ export default {
     return {};
   },
 };
-    // components: {HomeView},
-    // data() {
-    //     return {}
-    // },
-
-// }
 </script>
   
   
