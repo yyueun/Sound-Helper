@@ -11,7 +11,6 @@
 export default {
   methods: {
     goToStockList() {
-      // document.getElementById('menu').style.backgroundImage=url('soundhelper-vue\public\white.JPG');
       this.$router.push('/stocks')
     }
   }
@@ -23,7 +22,7 @@ export default {
 #menu {
   width: 320px;
   height: 568px;
-  background-image: url('C:\Users\user\Desktop\Sound-Helper\soundhelper-vue\public\menu.png');
+  background-image: url('../assets/menu.png');
   margin: auto;
   display: block;
 }

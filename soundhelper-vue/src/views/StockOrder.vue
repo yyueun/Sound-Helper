@@ -1,7 +1,7 @@
 <template>
     <div id="page">
         <div>
-            <img src="../assets/top-bar.png" style="height:32px; width: 320px">
+            <img src="../assets/top_bar.png" style="height:32px; width: 320px">
         </div>
         <div>
             <!-- 상단 바, 음표버튼 -->
@@ -39,7 +39,7 @@
             <button id="button">수익률</button>
         </div>
         <div id="bar">
-            <img src="..\assets\bottomBar.png">
+            <img src="..\assets\bottom_bar.png">
         </div>
     </div>
 </template>
