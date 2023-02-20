@@ -15,76 +15,82 @@
       <button aria-label="이 버튼을 누르면 차트를 음계로 들려줘용" class="w-btn w-btn-indigo" type="button">
         <i  onclick="play()" class="fa-sharp fa-solid fa-music fa-5x"></i>
     </button>
+    <button id = "btn" aria-label="이 버튼을 음성인식이 가능해용" class="w-btn w-btn-indigo" type="button">
+      <i class="fa-sharp fa-solid fa-microphone fa-5x"></i>  
+    </button>
+    <button id = "add" aria-label="이 버튼을 음성인식이 가능해용" class="w-btn w-btn-indigo" type="button">
+            추가하기
+    </button>
     </div>
+    <div id="result"></div>
 
-    <script>
-        var data = [  ["2023-02-01",61800],
-            ["2023-02-02",63500],
-            ["2023-02-03",63800],
-            ["2023-02-06",61600],
-            ["2023-02-07",61900],
-            ["2023-02-08",63100],
-            ["2023-02-09",63000],
-            ["2023-02-10",62800],
-            ["2023-02-13",62900],
-            ["2023-02-014",63200],
-            ["2023-02-15",62200],
-            ["2023-02-16",63400]]
-        var categories = data.map(function(item) {
-            return item[0];
-        });
-Highcharts.chart('container', {
-    // ...
-    title : {
-          text : "시각장애인을 위한 주식 차트(2월 삼성전자 종가)",  
-        },
-        xAxis: {
-                categories: categories,
-                title: {
-            text: 'Date/time',
-            align: 'high'
-        }
-            },
-    yAxis: {
-        title: {
-            text: '삼성전자 종가',
-            align: 'high',
-        }
-    },
-    series: [{
+
+<script>
+day = 17
+let currentTime = new Date().toTimeString().split(' ')[0];
+const data = [  ]
+const categories = [currentTime]
+drawchart(data)
+function drawchart(data){
+    Highcharts.chart('container', {
+        // ...
         
-        data: data.map(function(item) {
-                    return item[1];
-                }),
-        point: {
-            events: {
-                click: function () {
-                    // Sonify the point when clicked
-                    this.sonify({
-                        instruments: [{
-                            instrument: 'triangleMajor',
-                            instrumentMapping: {
-                                volume: function (point) {
-                                    return point.color === 'red' ? 0.2 : 0.8;
+        title : {
+            text : "시각장애인을 위한 주식 차트(2월 삼성전자 종가)",  
+        },
+        accessibility: {
+            announceNewData: {
+            enabled: true
+            }
+        },
+        
+        xAxis: {
+            
+            categories : categories,
+            title: {
+                text: 'Date/time',
+                align: 'high'
+            }
+        },
+        yAxis: {
+            title: {
+                text: '삼성전자 종가',
+                align: 'high',
+            }
+        },
+        series: [{
+            data: data.map(function(item) {
+                return item[1];
+            }),
+            point: {
+                events: {
+                    click: function () {
+                        // Sonify the point when clicked
+                        this.sonify({
+                            instruments: [{
+                                instrument: 'triangleMajor',
+                                instrumentMapping: {
+                                    volume: function (point) {
+                                        return point.color === 'red' ? 0.2 : 0.8;
+                                    },
+                                    duration: 200,
+                                    pan: 'x',
+                                    frequency: 'y'
                                 },
-                                duration: 200,
-                                pan: 'x',
-                                frequency: 'y'
-                            },
-                            // Start at C5 note, end at C6
-                            instrumentOptions: {
-                                minFrequency: 520,
-                                maxFrequency: 1050
-                            }
-                        }]
-                    });
+                                // Start at C5 note, end at C6
+                                instrumentOptions: {
+                                    minFrequency: 520,
+                                    maxFrequency: 1050
+                                }
+                            }]
+                        });
+                    }
                 }
             }
-        }
-    }]
-    ,
-    categories
-});
+        }],
+        categories,
+    });
+}
 function play() {
   const chart = Highcharts.charts[0];
   const series = chart.series[0];
@@ -120,6 +126,45 @@ function play() {
     i++;
   }, 500);
 }
+
+
+
+    var recognition = new webkitSpeechRecognition(); // Chrome에서 사용하는 객체입니다.
+    var startButton = document.getElementById('btn');
+    var resultDiv = document.getElementById('result');
+    
+    startButton.addEventListener('click', function() {
+        recognition.start(); // 음성 인식 시작
+    });
+    
+    recognition.onresult = function(event) {
+        var result = event.results[0][0].transcript; // 음성 인식 결과를 가져옵니다.
+        resultDiv.innerHTML = result;
+    };
+    
+    
+    
+    var button = document.getElementById('add');
+    function clickAdd () {
+        const temp = document.getElementById('container')
+        console.log(temp.getAttribute('data-highcharts-chart'))
+        const chart = Highcharts.charts[temp.getAttribute('data-highcharts-chart')]
+        console.log(chart)
+
+        let currentTime = new Date().toTimeString().split(' ')[0];
+        let randomprice = 62000+Math.round(Math.random() * 1000);
+        const t = document.getElementById('container')
+        const c = Highcharts.charts[t.getAttribute('data-highcharts-chart')]
+        console.log(c)
+        // c.series.events.click
+        chart.series[0].addPoint(randomprice)
+        categories.push(currentTime)
+        chart.series[0].data[chart.series[0].data.length-1].category = currentTime
+        // console.log( chart.series[0].data[chart.series[0].data.length-1].category)
+
+        day++;
+    }
+    button.onclick = setInterval(clickAdd, 1000)
 
     </script>
 </body>

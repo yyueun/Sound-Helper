@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>음계 소리</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <script>
+    // Web Audio API에서 사용할 오디오 컨텍스트 생성
+    const audioContext = new AudioContext();
+
+    // 음계와 주파수를 매핑하는 맵
+    const noteFrequencies = new Map([
+      ['C4', 261.63],
+      ['D4', 293.66],
+      ['E4', 329.63],
+      ['F4', 349.23],
+      ['G4', 392.00],
+      ['A4', 440.00],
+      ['B4', 493.88]
+    ]);
+
+    // 캔버스에서 클릭 이벤트 발생 시 음계 소리를 재생하는 함수
+    function playSound(event) {
+      // 마우스 클릭 위치의 좌표
+      const x = event.clientX - canvas.offsetLeft;
+      const y = event.clientY - canvas.offsetTop;
+
+      // 클릭 위치의 x좌표에 해당하는 음계 계산
+      const notes = Array.from(noteFrequencies.keys());
+      const noteIndex = Math.floor(x / (canvas.width / notes.length));
+      const note = notes[noteIndex];
+
+      // 음계에 해당하는 주파수 가져오기
+      const frequency = noteFrequencies.get(note);
+
+      // Oscillator 노드 생성
+      const oscillator = audioContext.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+      // Gain 노드 생성
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.1);
+      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
+
+      // 노드 연결
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      // 오실레이터 시작 및 종료
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 1);
+    }
+
+    // 캔버스에 클릭 이벤트 리스너 등록
+    const canvas = document.getElementById('canvas');
+    canvas.addEventListener('click', playSound);
+  </script>
+</body>
+</html>
