@@ -22,23 +22,24 @@ export default {
 #menu {
   width: 320px;
   height: 568px;
-  background-image: url('../assets/menu.png');
+  background-image: url('../assets/menu.jpg');
   margin: auto;
   display: block;
 }
 
 #sound_mode {
   position: absolute;
-  width: 65px;
-  height: 65px;
-  left: 5px;
-  top: 452px;
+  width: 60px;
+  height: 60px;
+  left: 10px;
+  top: 355px;
   background-color: #41FFCF;
+  border: none;
   border-radius: 12px;
   font-family: 'IBM Plex Sans';
   font-style: normal;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 26px;
   display: flex;
   align-items: center;

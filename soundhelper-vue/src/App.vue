@@ -20,6 +20,10 @@ export default {
   
   
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+html {font-size:16px;}
+body {font-family: 'Noto Sans KR', sans-serif;}
+
 #app {
     width: 320px;
     height: 568px;

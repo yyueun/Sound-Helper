@@ -5,7 +5,10 @@
     </div>
     <div id="top">
       <!-- 상단 바 (뒤로가기, 실시간종목순위, 하트, 더보기) -->
-      <button style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+      <router-link to="/">
+        <button @click='goToMenu' style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+      </router-link>
+      <router-view/>
       <span id="rank">실시간 종목순위</span>
       <span id="more">.&nbsp;.&nbsp;.<br>더보기</span>
       <i class="fa-regular fa-heart" id="heart-icon"></i>
@@ -82,9 +85,13 @@
     },
   },
   methods: {
+    goToMenu() {
+      this.$router.push('/')
+    },
     search() {
-      // 검색어를 변경할 때마다 필터링된 주식 종목 목록 업데이트
-      this.sortedStocks;
+
+
+
     },
     sortByMarketCap() {
       // 시가총액순으로 정렬
@@ -104,7 +111,6 @@
 #page {
   width: 320px;
   height: 568px;
-  border: 1px solid;
 }
 
 #top {
