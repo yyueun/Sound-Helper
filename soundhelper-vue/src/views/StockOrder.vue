@@ -109,7 +109,7 @@ export default {
                 }
             },
             series: [{
-                data: [1, 2, 3, 2, 5, 3]
+                data: [1, 4, 7, 2, 3]
             }]
         }
     }
