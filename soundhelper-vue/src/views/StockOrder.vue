@@ -111,6 +111,37 @@ export default {
             series: [{
                 data: [1, 4, 7, 2, 3]
             }]
+            // series: [{
+            //     showInLegend: false, // 범례에서 숨김
+            //     data: data.map(function(item) {
+            //         return item[1];
+            //     }),
+            //     point: {
+            //         events: {
+            //             click: function () {
+            //                 // Sonify the point when clicked
+            //                 this.sonify({
+            //                     instruments: [{
+            //                         instrument: 'triangleMajor',
+            //                         instrumentMapping: {
+            //                             volume: function (point) {
+            //                                 return point.color === 'red' ? 0.2 : 0.8;
+            //                             },
+            //                             duration: 200,
+            //                             pan: 'x',
+            //                             frequency: 'y'
+            //                         },
+            //                         // Start at C5 note, end at C6
+            //                         instrumentOptions: {
+            //                             minFrequency: 520,
+            //                             maxFrequency: 1050
+            //                         }
+            //                     }]
+            //                 });
+            //             }
+            //         }
+            //     }
+            // }]
         }
     }
   },
