@@ -34,7 +34,7 @@
                 <input id="input-count" type="text" v-model="count" placeholder="0">
                 <button id="plusone" :style="{ 'background-color': '#6F4BFD' }" @click="up">+1</button>
             </div>
-            <div class="btn-set">
+            <div class="trade">
                 <!-- 구매 판매 버튼 -->
                 <button id="buy_button" @click="showBuyPopup" :style="{ 'background-color': '#FB5A6B'}">구매</button>
                 <button id="sell_button" @click="showSellPopup" :style="{ 'background-color': '#6F4BFD'}">판매</button>
@@ -47,17 +47,13 @@
                     </div>
                 </div>
             </div>
-            <div style="height: 225px"></div>
-            <div>
-                <!-- 음성인식 -->
-                <button id="voice">음성인식</button>
-            </div>
-            <div class="btn-set">
+            <div style="height: 155px"></div>
+            <div class="btns">
                 <!-- 예수금, 수익률 버튼 -->
                 <button id="deposit">예수금</button>
                 <button id="erate">수익률</button>
             </div>
-            <div style="height: 215px"></div>
+            <div style="height: 135px"></div>
         </div>
         <div style="position: fixed">
             <img src="..\assets\bottom_bar.png" id="bottom-bar">
@@ -68,6 +64,8 @@
 <script>
 import {Chart} from 'highcharts-vue'
 
+let currentTime = new Date().toTimeString().split(' ')[0];
+const categories = [currentTime];
 
 export default {
   components: {
@@ -75,24 +73,45 @@ export default {
   },
   data() {
     return {
-      isPopupOpen: false,
-      chartOptions: {
-        chart: {
-            height: 200 + 'px'
-        },
-        title : {
-            text : "시각장애인을 위한 주식 차트 (실시간)",  
-            style : '10px'    
-        },
-        accessibility: {
-            announceNewData: {
-                enabled: true
-            }
-        },
-        series: [{
-            data: [1, 2, 3]
-        }]
-      }
+        isPopupOpen: false,
+        chartOptions: {
+            chart: {
+                height: 200 + 'px'
+            },
+            title : {
+                text : "시각장애인을 위한 주식 차트 (실시간)",  
+                style : '10px'    
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                title: {
+                    text: 'Date/time',
+                    align: 'high'
+                },
+                categories : categories,
+                labels:{
+                    style:{ fontSize: '5px' }
+                },
+            },
+            yAxis: {
+                title: {
+                    text: 'price',
+                    align: 'high',
+                },
+                labels: {
+                    style:{
+                        fontSize: '10px'
+                    }
+                }
+            },
+            series: [{
+                data: [1, 2, 3, 2, 5, 3]
+            }]
+        }
     }
   },
   methods: {
@@ -220,27 +239,35 @@ export default {
   margin-top: 5px;
 }
 
-.btn-set {
+.trade {
     display: flex;
     justify-content: center;
     border: none;
 }
 
+.btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
 #deposit {
     border: none;
-    margin-right: 5px;
+    margin-bottom: 10px;
     border-radius: 15px;
-    width: 120px;
-    height: 40px;
+    width: 181px;
+    height: 80px;
     font-size: 20px;
 }
 
 #erate {
     border: none;
-    margin-left: 5px;
+    margin-top: 10px;
     border-radius: 15px;
-    width: 120px;
-    height: 40px;
+    width: 181px;
+    height: 80px;
     font-size: 20px;
 }
 
