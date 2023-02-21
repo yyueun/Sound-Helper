@@ -1,5 +1,5 @@
 <template>
-    <div id="page">
+    <div class="page">
         <div>
             <img src="../assets/top_bar.png" style="height:32px; width: 320px">
         </div>
@@ -14,9 +14,12 @@
             <i class="fa-solid fa-music" id="music-icon"></i>
         </div>
         <div style="overflow: scroll; height: 460px">
-            <div id="chart-container">
+            <div id="chart-container" stlye="width: 200px">
                 <!-- 차트 -->
-                <div id="chart"></div>
+                <div id="chart" >
+                    <div style="height: 30px"></div>
+                    <highcharts :options="chartOptions" stlye="width: 200px"/>
+                </div>
                 <!-- 현재가 -->
                 <h2 id="current-price">38,300</h2>
                 <!-- 일반모드 전환 -->
@@ -63,10 +66,33 @@
 </template>
 
 <script>
+import {Chart} from 'highcharts-vue'
+
+
 export default {
+  components: {
+    highcharts: Chart
+  },
   data() {
     return {
-      isPopupOpen: false
+      isPopupOpen: false,
+      chartOptions: {
+        chart: {
+            height: 200 + 'px'
+        },
+        title : {
+            text : "시각장애인을 위한 주식 차트 (실시간)",  
+            style : '10px'    
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        series: [{
+            data: [1, 2, 3]
+        }]
+      }
     }
   },
   methods: {
@@ -111,7 +137,7 @@ export default {
 </script>
 
 <style>
-#page {
+.page {
   width: 320px;
   height: 568px;
 }
