@@ -3,9 +3,13 @@
         <div>
             <img src="../assets/top_bar.png" style="height:32px; width: 320px">
         </div>
+        
         <div>
             <!-- 상단 바, 음표버튼 -->
-            <button style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+            <router-link to="/stocks">
+                <button @click='goBack' style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+            </router-link>
+            <router-view/>
             <span id="name" style="width: 150px;">신한지주</span>
             <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
             <i class="fa-solid fa-music" id="music-icon"></i>
@@ -15,20 +19,31 @@
             <div id="chart"></div>
             <!-- 현재가 -->
             <h2 id="current-price">38,300</h2>
-            <!-- 일반모드 전환 -->  
-            <button id="normal-mode">일반</button>
+            <!-- 일반모드 전환 -->
+            <router-link to="/">
+                <button id="normal-mode" @click='goToMenu'>차트</button>
+            </router-link> 
         </div>
         <div id="count">
             <!-- 플러스마이너스 버튼, 현재 수 -->
-            <button :style="{ 'background-color': '#FB5A6B' }" @click="decrement">-1</button>
+            <button :style="{ 'background-color': '#FFF448' }" @click="decrement">-1</button>
             <input type="text" v-model="count">
-            <button :style="{ 'background-color': '#6F4BFD' }" @click="increment">+1</button>
+            <button :style="{ 'background-color': '#41FFFF' }" @click="increment">+1</button>
         </div>
         <div id="btn-set">
             <!-- 구매 판매 버튼 -->
-            <button id="button" :style="{ 'background-color': '#FB5A6B'}">구매</button>
-            <button id="button" :style="{ 'background-color': '#6F4BFD'}">판매</button>
+            <button id="button" @click="showBuyPopup" :style="{ 'background-color': '#FFF448'}">구매</button>
+            <button id="button" @click="showSellPopup" :style="{ 'background-color': '#41FFFF'}">판매</button>
         </div>
+        <div class="popup-overlay" v-if="isPopupOpen">
+            <div class="popup">
+                <div>
+                    <button @click="onConfirm" class="popup-button" :style="{ 'background-color': '#FFF448'}">예</button>
+                    <button @click="onCancel" class="popup-button" :style="{ 'background-color': '#41FFFF'}">아니오</button>
+                </div>
+            </div>
+        </div>
+
         <div id="voice">
             <!-- 음성인식 -->
             <button id="button">음성인식</button>
@@ -46,16 +61,43 @@
 
 <script>
 export default {
-    
+  data() {
+    return {
+      isPopupOpen: false
+    }
+  },
+  methods: {
+    goBack() {
+        history.back();
+    },
+    // goToMenu() {
+    //   this.$router.push('/')
+    // },
+    // goToStockList() {
+    //   this.$router.push('/stocks')
+    // },
+    showBuyPopup() {
+      this.isPopupOpen = true;
+    },
+    showSellPopup() {
+        this.isPopupOpen = true;
+    },
+    onConfirm() {
+      // 구매 확인 로직
+      this.isPopupOpen = false;
+    },
+    onCancel() {
+      this.isPopupOpen = false;
+    }
+  }
 }
-
 </script>
 
 <style>
 #page {
   width: 320px;
   height: 568px;
-  border: 1px solid;
+  border: 1px solid;       /* 지우기 */
 }
 
 #chart-container {
@@ -156,5 +198,54 @@ export default {
 #bar img {
     position: absolute;
     width: 320px;
+}
+
+.product {
+  width: 320px;
+  height: 568px;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 568px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  width: 300px;
+  height: 450px;
+  top: 40px;
+  left: 10px;
+  background-color: white;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+}
+
+.popup-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 181px;
+  height: 97px;
+  margin: 20px 0px 20px 0px;
+  border-radius: 25px;
+  justify-content: center;
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 1000;
+  font-size: 25px;
 }
 </style>

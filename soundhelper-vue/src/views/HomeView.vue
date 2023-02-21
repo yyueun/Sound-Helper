@@ -34,6 +34,7 @@ export default {
   left: 5px;
   top: 452px;
   background-color: #41FFCF;
+  border: none;
   border-radius: 12px;
   font-family: 'IBM Plex Sans';
   font-style: normal;
