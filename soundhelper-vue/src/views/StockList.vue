@@ -16,7 +16,7 @@
     <br>
     <div id="search-container">
       <!-- 검색창 -->
-      <input id="search" type="text" placeholder="&nbsp&nbsp검색" v-model="searchTerm">   <!--@input="search"-->
+      <input id="search" type="text" placeholder="&nbsp&nbsp검색" v-model="searchTerm" @input="search">
     </div>
     <br>
     <div>
@@ -88,10 +88,11 @@
     goToMenu() {
       this.$router.push('/')
     },
-    // search() {
-    //   // 검색어를 변경할 때마다 필터링된 주식 종목 목록 업데이트
-    //   this.sortedStocks;
-    // },
+    search() {
+
+
+
+    },
     sortByMarketCap() {
       // 시가총액순으로 정렬
       this.sortOption = 'marketCap';
@@ -110,7 +111,6 @@
 #page {
   width: 320px;
   height: 568px;
-  border: 1px solid;    /* 지우기 */
 }
 
 #top {
