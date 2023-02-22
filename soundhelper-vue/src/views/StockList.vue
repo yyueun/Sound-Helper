@@ -6,7 +6,7 @@
     <div id="top">
       <!-- 상단 바 (뒤로가기, 실시간종목순위, 하트, 더보기) -->
       <router-link to="/">
-        <button @click='goToMenu' style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+        <button @click='goToMenu' style="width:32px; height: 33px; float:left; border: none;">&lt;</button>
       </router-link>
       <router-view/>
       <span id="rank">실시간 종목순위</span>
