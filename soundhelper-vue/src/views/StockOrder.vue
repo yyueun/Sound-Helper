@@ -6,29 +6,26 @@
         <div id="top-bar">
             <!-- 상단 바, 음표버튼 -->
             <router-link to="/stocks">
-                <button @click='goBack' style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+                <button @click='goBack' style="width:32px; height: 33px; float:left; border: none;">&lt;</button>
             </router-link>
             <router-view/>
             <!-- [{{ $route.params.name }}].name -->
             <span id="name" style="width: 150px;">{{ stocks[$route.params.name-1].name}}</span>
             <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-            <i class="fa-solid fa-music" id="music-icon"></i>
+            <i class="fa-solid fa-music" id="music-icon" @click="play"></i>
         </div>
         <div style="overflow: scroll; height: 460px">
-            <div id="chart-container" stlye="width: 200px">
+            <div id="chart" stlye="width: 200px"></div>
                 <!-- 차트 -->
-                <div id="chart" >
-                    <div style="height: 30px"></div>
-                    <highcharts :options="chartOptions" stlye="width: 200px"/>
-                </div>
+
                 <!-- 현재가 -->
                 <h2 class="current-price" v-if="stocks[$route.params.name-1].fluctuationRate < 0" style="color: blue">{{stocks[$route.params.name-1].price}}</h2>
                 <h2 class="current-price" v-if="stocks[$route.params.name-1].fluctuationRate > 0" style="color: red">{{stocks[$route.params.name-1].price}}</h2>
                 <!-- 일반모드 전환 -->
                 <router-link to="/">
                     <button id="normal-mode" @click='goToMenu'>차트</button>
-                </router-link> 
-            </div>
+                </router-link>
+
             <div style="height: 40px;"></div>
             <div id="count">
                 <!-- 플러스마이너스 버튼, 현재 수 -->
@@ -65,11 +62,73 @@
 
 <script>
 import {Chart} from 'highcharts-vue'
+import Highcharts from "highcharts";
 
 let currentTime = new Date().toTimeString().split(' ')[0];
 const categories = [currentTime];
 
 export default {
+<<<<<<< HEAD
+    name: 'Query',    
+    components: {
+        highcharts: Chart
+    },
+    data() {
+        return {
+            isPopupOpen: false,
+            data: [{data : [] , categories : [new Date().toTimeString().split(" ")[0]]}],
+            state: null,
+        };
+    },
+    mounted() {      
+        this.drawChart(this.data[0]);
+        this.main(this.data[0])
+    },
+    methods: {
+        goBack() {
+            history.back();
+        },
+        up(){
+            let count = Number(document.getElementById("input-count").value)
+            let plusone = document.getElementById("plusone");
+            let up = document.querySelector("#plusone")
+            count = count + 1
+            document.getElementById("input-count").value = count 
+            plusone.setAttribute("aria-labelledby", "input-count")
+            up.classList.remove("aria-labelledby");
+        },
+        down(){
+            let count = Number(document.getElementById("input-count").value)
+            let minusone = document.getElementById("minusone");
+            let down = document.querySelector("#minusone")
+            if(count > 0){
+                count = count - 1
+                document.getElementById("input-count").value = count
+                minusone.setAttribute("aria-labelledby", "input-count")
+                down.classList.remove("aria-labelledby");
+            }
+        },
+        showBuyPopup() {
+            this.isPopupOpen = true;
+        },
+        showSellPopup() {
+            this.isPopupOpen = true;
+        },
+        onConfirm() {
+        // 구매 확인 로직
+            this.isPopupOpen = false;
+        },
+        onCancel() {
+            this.isPopupOpen = false;
+        },
+
+        drawChart(data, name = "") {         
+            Highcharts.chart("container", {
+                chart: {
+                    width: 230 + 'px',
+                    height: 200 + 'px',
+                },
+=======
   props: ['stocks'],
   name: 'Query',
   components: {
@@ -102,67 +161,125 @@ export default {
                 }
             },
             xAxis: {
+>>>>>>> 41a8ba2bd3a0c832f6d107249402bfd8d9c4d70e
                 title: {
-                    text: 'Date/time',
-                    align: 'high'
+                    text: "실시간 차트",
+                    style: "10px",
                 },
-                categories : categories,
-                labels:{
-                    style:{ fontSize: '5px' }
+                accessibility: {
+                    announceNewData: {
+                        enabled: true,
+                    },
                 },
-            },
-            yAxis: {
-                title: {
-                    text: 'price',
-                    align: 'high',
+                xAxis: {
+                    //////////////
+                    categories: data.categories,
+                    labels: {
+                        style: {
+                        fontSize: "5px",
+                        },
+                    },
+                    title: {
+                        text: "Date/time",
+                        align: "high",
+                    },
                 },
-                labels: {
-                    style:{
-                        fontSize: '10px'
+                yAxis: {
+                    title: {
+                        text: "price",
+                        align: "high",
+                    },
+                    labels: {
+                        style: {
+                            fontSize: "10px",
+                        },
+                    },
+                },
+                series: [{
+                    showInLegend: false,
+                    data: data.data.map(function (item) {   ///////////////////
+                        return item[1];
+                    }),
+                    point: {
+                        events: {
+                            click: function () {
+                                this.sonify({
+                                    instruments: [{
+                                        instrument: "triangleMajor",
+                                        instrumentMapping: {
+                                            volume: function (point) {
+                                                return point.color === "red" ? 0.2 : 0.8;
+                                            },
+                                            duration: 200,
+                                            pan: "x",
+                                            frequency: "y",
+                                        },
+                                        instrumentOptions: {
+                                            minFrequency: 520,
+                                            maxFrequency: 1050,
+                                        }
+                                    }
+                                    ]
+                                });
+                            }
+                        }
                     }
+                }]
+            });
+        },
+        liveplay() {
+            const chart = Highcharts.charts[0];
+            const series = chart.series[0];
+            const points = series.points;
+            console.log(chart)
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i == 1) {
+                    clearInterval(interval);
+                    return;
                 }
-            },
-            series: [{
-                data: [1, 4, 7, 2, 3]
-            }]
-            // series: [{
-            //     showInLegend: false, // 범례에서 숨김
-            //     data: data.map(function(item) {
-            //         return item[1];
-            //     }),
-            //     point: {
-            //         events: {
-            //             click: function () {
-            //                 // Sonify the point when clicked
-            //                 this.sonify({
-            //                     instruments: [{
-            //                         instrument: 'triangleMajor',
-            //                         instrumentMapping: {
-            //                             volume: function (point) {
-            //                                 return point.color === 'red' ? 0.2 : 0.8;
-            //                             },
-            //                             duration: 200,
-            //                             pan: 'x',
-            //                             frequency: 'y'
-            //                         },
-            //                         // Start at C5 note, end at C6
-            //                         instrumentOptions: {
-            //                             minFrequency: 520,
-            //                             maxFrequency: 1050
-            //                         }
-            //                     }]
-            //                 });
-            //             }
-            //         }
-            //     }
-            // }]
-        }
-    }
-  },
-  methods: {
-    goBack() {
-        history.back();
+                const point = points[points.length- i-1];
+                point.sonify({
+                    instruments: [{
+                        instrument: "triangleMajor",
+                        instrumentMapping: {
+                            volume: function (point) {
+                                return point.color === 'red' ? 0.2 : 0.8;
+                            },
+                            duration: 200,
+                            pan: "x",
+                            frequency: "y",
+                        },
+                        // Start at C5 note, end at C6
+                        instrumentOptions: {
+                            minFrequency: 520,
+                            maxFrequency: 1050,
+                        }
+                    }]
+                })
+                i++
+            }, 500)
+        },
+        main(data){
+            const temp = document.getElementById('container')
+            const chart = Highcharts.charts[temp.getAttribute('data-highcharts-chart')]
+            let currentTime = new Date().toTimeString().split(' ')[0];
+            let randomprice = Math.round(Math.random() * 10);
+            console.log(chart.series[0].data)
+            chart.series[0].addPoint(randomprice)
+            data.categories.push(currentTime)
+            chart.series[0].data[chart.series[0].data.length-1].category = currentTime
+            liveplay()
+        },
     },
+    computed: {
+        stocks() {
+            return this.$store.state.stocks;
+        }
+    },
+<<<<<<< HEAD
+    created() {},
+=======
     up(){
       let count = Number(document.getElementById("input-count").value)
       let plusone = document.getElementById("plusone");
@@ -205,6 +322,7 @@ export default {
   created() {
 
   }
+>>>>>>> 41a8ba2bd3a0c832f6d107249402bfd8d9c4d70e
 }
 </script>
 
@@ -214,17 +332,19 @@ export default {
   height: 568px;
 }
 
+/* 
 #chart-container {
     position: relative;
     border: 0.1px solid red;
 }
 
-#chart {
+#chart-container2 {
     width: 300px;
     height: 230px;
     top: 30px;
     left: 10px;
 }
+*/
 
 .current-price {
     width: 40px;
