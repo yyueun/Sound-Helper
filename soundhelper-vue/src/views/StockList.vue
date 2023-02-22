@@ -6,7 +6,7 @@
     <div id="top">
       <!-- 상단 바 (뒤로가기, 실시간종목순위, 하트, 더보기) -->
       <router-link to="/">
-        <button @click='goToMenu' style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+        <button @click='goToMenu' style="width:32px; height: 33px; float:left; border: none;">&lt;</button>
       </router-link>
       <router-view/>
       <span id="rank">실시간 종목순위</span>
@@ -35,12 +35,15 @@
       <div v-for="stock in stocks" :key="stock.id">
         <table>
             <tbody>
+              <router-link :to="`/order/${stock.id}`" style="text-decoration: none ">
+                <!-- <router-link :to="{name: 'Query', query: {name: '${stock.name}', price:'${stock.price}'}}"></router-link> -->
                 <tr>
-                    <td style="width:150px; text-align:left; padding: 10px">{{ stock.name }}</td>
-                    <td style="width: 100px; text-align: right;">{{ stock.price }}</td>
+                    <td style="width:150px; text-align:left; padding: 10px; color: black">{{ stock.name }}</td>
+                    <td style="width: 100px; text-align: right; color:black">{{ stock.price }}</td>
                     <td  v-if="stock.fluctuationRate < 0" style="width: 70px; text-align: right; padding: 10px; color: blue">{{ (-1) * Number(stock.fluctuationRate) }}%</td>
                     <td  v-if="stock.fluctuationRate > 0" style="width: 70px; text-align: right; padding: 10px; color: red">{{ stock.fluctuationRate }}%</td>
                 </tr>
+              </router-link>
             </tbody>
         </table>
         <hr>
@@ -58,15 +61,15 @@
     data() {
       return {
         searchTerm: '',
-        stocks: [
-          { id: 1, name: '삼성전자', price: 62000, fluctuationRate: -1.58, marketCap: 520000000000, volume: 1000000 },
-          { id: 2, name: 'LG에너지솔루션', price: 516000, fluctuationRate: -3.19, marketCap: 80000000000, volume: 500000 },
-          { id: 3, name: 'SK하이닉스', price: 92500, fluctuationRate: 0.54, marketCap: 60000000000, volume: 200000 },
-          { id: 4, name: '삼성바이오로직스', price: 805000, fluctuationRate: 0.75, marketCap: 450000000000, volume: 300000 },
-          { id: 5, name: '삼성SDI', price: 692000, fluctuationRate: -1.56, marketCap: 450000000000, volume: 300000 },
-          { id: 6, name: 'LG화학', price: 667000, fluctuationRate: -3.19, marketCap: 450000000000, volume: 300000 },
-          { id: 7, name: '삼성전자우', price: 55900, fluctuationRate: 0.18, marketCap: 450000000000, volume: 300000 },
-        ],
+        // stocks: [
+        //   { id: 1, name: '삼성전자', price: 62000, fluctuationRate: -1.58, marketCap: 520000000000, volume: 1000000 },
+        //   { id: 2, name: 'LG에너지솔루션', price: 516000, fluctuationRate: -3.19, marketCap: 80000000000, volume: 500000 },
+        //   { id: 3, name: 'SK하이닉스', price: 92500, fluctuationRate: 0.54, marketCap: 60000000000, volume: 200000 },
+        //   { id: 4, name: '삼성바이오로직스', price: 805000, fluctuationRate: 0.75, marketCap: 450000000000, volume: 300000 },
+        //   { id: 5, name: '삼성SDI', price: 692000, fluctuationRate: -1.56, marketCap: 450000000000, volume: 300000 },
+        //   { id: 6, name: 'LG화학', price: 667000, fluctuationRate: -3.19, marketCap: 450000000000, volume: 300000 },
+        //   { id: 7, name: '삼성전자우', price: 55900, fluctuationRate: 0.18, marketCap: 450000000000, volume: 300000 },
+        // ],
       sortOption: 'marketCap',
       sortAscending: false,
     };
@@ -83,8 +86,14 @@
       });
       return sorted.filter(stock => stock.name.includes(this.searchTerm));
     },
+    stocks() {
+      return this.$store.state.stocks;
+    }
   },
   methods: {
+    // toDetail() {
+    //   this.$router.push({name: '/order/:name', params: {stocks: this.stocks}})
+    // },
     goToMenu() {
       this.$router.push('/')
     },
@@ -163,4 +172,6 @@
   position: absolute;
   width: 320px;
 }
+
+
 </style>

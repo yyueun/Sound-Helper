@@ -6,10 +6,11 @@
         <div id="top-bar">
             <!-- 상단 바, 음표버튼 -->
             <router-link to="/stocks">
-                <button @click='goBack' style="width:32px; height: 33px; float:left; border: none;">&lt</button>
+                <button @click='goBack' style="width:32px; height: 33px; float:left; border: none;">&lt;</button>
             </router-link>
             <router-view/>
-            <span id="name" style="width: 150px;">신한지주</span>
+            <!-- [{{ $route.params.name }}].name -->
+            <span id="name" style="width: 150px;">{{ stocks[$route.params.name-1].name}}</span>
             <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
             <i class="fa-solid fa-music" id="music-icon" @click="play"></i>
         </div>
@@ -18,7 +19,8 @@
                 <!-- 차트 -->
 
                 <!-- 현재가 -->
-                <h2 id="current-price">38,300</h2>
+                <h2 class="current-price" v-if="stocks[$route.params.name-1].fluctuationRate < 0" style="color: blue">{{stocks[$route.params.name-1].price}}</h2>
+                <h2 class="current-price" v-if="stocks[$route.params.name-1].fluctuationRate > 0" style="color: red">{{stocks[$route.params.name-1].price}}</h2>
                 <!-- 일반모드 전환 -->
                 <router-link to="/">
                     <button id="normal-mode" @click='goToMenu'>차트</button>
@@ -66,6 +68,7 @@ let currentTime = new Date().toTimeString().split(' ')[0];
 const categories = [currentTime];
 
 export default {
+    name: 'Query',    
     components: {
         highcharts: Chart
     },
@@ -234,7 +237,12 @@ export default {
             liveplay()
         },
     },
-    
+    computed: {
+        stocks() {
+            return this.$store.state.stocks;
+        }
+    },
+    created() {},
 }
 </script>
 
@@ -258,7 +266,7 @@ export default {
 }
 */
 
-#current-price {
+.current-price {
     width: 40px;
     height: 20px;
     position: absolute;
@@ -302,6 +310,7 @@ export default {
     float: left;
     margin-left: 10px;
     border: 1px solid;
+    padding-left: 5px
 }
 
 #search-icon {
