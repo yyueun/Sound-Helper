@@ -5,19 +5,17 @@
         </div>
         <div id="top-bar">
             <!-- 상단 바, 음표버튼 -->
-            <router-link to="/stocks">
-                <button @click='goBack' style="width:32px; height: 33px; float:left; border: none;">&lt;</button>
-            </router-link>
-            <router-view/>
-            <!-- [{{ $route.params.name }}].name -->
+            <button @click='goToStockList' style="width:32px; height: 33px; float:left; border: none;">&lt;</button>
+            <router-view />
             <span id="name" style="width: 150px;">{{ stocks[$route.params.name-1].name}}</span>
             <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
             <i class="fa-solid fa-music" id="music-icon" @click="play"></i>
         </div>
         <div style="overflow: scroll; height: 460px">
-            <div id="chart" stlye="width: 200px"></div>
+            <div id="chart" >
                 <!-- 차트 -->
-
+                <highcharts :options="chartOptions" ref="highchart" id="chart-container" style="height: 300px"></highcharts>
+                <!-- <div id="chart-container" style="height: 300px"> -->
                 <!-- 현재가 -->
                 <h2 class="current-price" v-if="stocks[$route.params.name-1].fluctuationRate < 0" style="color: blue">{{stocks[$route.params.name-1].price}}</h2>
                 <h2 class="current-price" v-if="stocks[$route.params.name-1].fluctuationRate > 0" style="color: red">{{stocks[$route.params.name-1].price}}</h2>
@@ -25,8 +23,11 @@
                 <router-link to="/">
                     <button id="normal-mode" @click='goToMenu'>차트</button>
                 </router-link>
-
-            <div style="height: 40px;"></div>
+                <router-link to="/">
+                    <button id="live-mode" @click='goToMenu'>Live</button>
+                </router-link>
+            </div>
+                <!-- </div> -->
             <div id="count">
                 <!-- 플러스마이너스 버튼, 현재 수 -->
                 <button id="minusone" :style="{ 'background-color': '#FB5A6B' }" @click="down">-</button>
@@ -61,46 +62,108 @@
 </template>
 
 <script>
-import {Chart} from 'highcharts-vue'
-import Highcharts from "highcharts";
-
+import Highcharts from 'highcharts'
+import sonificationInit from 'highcharts/modules/sonification'
+import { Chart } from 'highcharts-vue' 
+    
+sonificationInit(Highcharts)
 let currentTime = new Date().toTimeString().split(' ')[0];
 const categories = [currentTime];
 
 export default {
-    name: 'Query',    
+    name: 'Query',
     components: {
-        highcharts: Chart
+        highcharts: Chart,
     },
     data() {
         return {
             isPopupOpen: false,
-            data: [{data : [] , categories : [new Date().toTimeString().split(" ")[0]]}],
+            data: [{ data: [], categories: [new Date().toTimeString().split(" ")[0]] }],
             state: null,
+            chartOptions: {
+                series: [{
+                    showInLegend: false,
+                    data: [1,2,3],
+                    point: {
+                        events: {
+                            click: function () {
+                                this.sonify({
+                                    instruments: [{
+                                        instrument: "triangleMajor",
+                                        instrumentMapping: {
+                                            volume: function (point) {
+                                                return point.color === "red" ? 0.2 : 0.8;
+                                            },
+                                            duration: 200,
+                                            pan: "x",
+                                            frequency: "y",
+                                        },
+                                        instrumentOptions: {
+                                            minFrequency: 520,
+                                            maxFrequency: 1050,
+                                        }
+                                    }
+                                    ]
+                                });
+                            }
+                        }
+                    }
+                }],
+                xAxis: {
+                    //////////////
+                    categories: [new Date().toTimeString().split(" ")[0]],
+                    labels: {
+                        style: {
+                            fontSize: "5px",
+                        },
+                    },
+                    title: {
+                        text: "Date/time",
+                        align: "high",
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: "price",
+                        align: "high",
+                    },
+                    labels: {
+                        style: {
+                            fontSize: "10px",
+                        },
+                    },
+                },
+                title: {
+                    text: "실시간 차트",
+                    style: "10px",
+                },
+                accessibility: {
+                        enabled: false
+                },
+            }
         };
     },
-    mounted() {      
-        this.drawChart(this.data[0]);
-        this.main(this.data[0])
+    mounted() {
+        this.isloaded = true;
     },
     methods: {
-        goBack() {
-            history.back();
+        goToStockList() {
+            this.$router.go(-1);
         },
-        up(){
+        up() {
             let count = Number(document.getElementById("input-count").value)
             let plusone = document.getElementById("plusone");
             let up = document.querySelector("#plusone")
             count = count + 1
-            document.getElementById("input-count").value = count 
+            document.getElementById("input-count").value = count
             plusone.setAttribute("aria-labelledby", "input-count")
             up.classList.remove("aria-labelledby");
         },
-        down(){
+        down() {
             let count = Number(document.getElementById("input-count").value)
             let minusone = document.getElementById("minusone");
             let down = document.querySelector("#minusone")
-            if(count > 0){
+            if (count > 0) {
                 count = count - 1
                 document.getElementById("input-count").value = count
                 minusone.setAttribute("aria-labelledby", "input-count")
@@ -114,14 +177,14 @@ export default {
             this.isPopupOpen = true;
         },
         onConfirm() {
-        // 구매 확인 로직
+            // 구매 확인 로직
             this.isPopupOpen = false;
         },
         onCancel() {
             this.isPopupOpen = false;
         },
 
-        drawChart(data, name = "") {         
+        drawChart(data, name = "") {
             Highcharts.chart("container", {
                 chart: {
                     width: 230 + 'px',
@@ -141,7 +204,7 @@ export default {
                     categories: data.categories,
                     labels: {
                         style: {
-                        fontSize: "5px",
+                            fontSize: "5px",
                         },
                     },
                     title: {
@@ -203,7 +266,7 @@ export default {
                     clearInterval(interval);
                     return;
                 }
-                const point = points[points.length- i-1];
+                const point = points[points.length - i - 1];
                 point.sonify({
                     instruments: [{
                         instrument: "triangleMajor",
@@ -225,7 +288,7 @@ export default {
                 i++
             }, 500)
         },
-        main(data){
+        main(data) {
             const temp = document.getElementById('container')
             const chart = Highcharts.charts[temp.getAttribute('data-highcharts-chart')]
             let currentTime = new Date().toTimeString().split(' ')[0];
@@ -233,7 +296,7 @@ export default {
             console.log(chart.series[0].data)
             chart.series[0].addPoint(randomprice)
             data.categories.push(currentTime)
-            chart.series[0].data[chart.series[0].data.length-1].category = currentTime
+            chart.series[0].data[chart.series[0].data.length - 1].category = currentTime
             liveplay()
         },
     },
@@ -242,7 +305,7 @@ export default {
             return this.$store.state.stocks;
         }
     },
-    created() {},
+    created() { },
 }
 </script>
 
@@ -252,12 +315,12 @@ export default {
   height: 568px;
 }
 
-/* 
-#chart-container {
+#chart {
     position: relative;
-    border: 0.1px solid red;
 }
 
+
+/*
 #chart-container2 {
     width: 300px;
     height: 230px;
@@ -290,6 +353,23 @@ export default {
     width: 48px;
     height: 48px;
     top: 7px;
+    right: 7px;
+    position: absolute;
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+    border-radius: 12px;
+}
+#live-mode {
+    width: 48px;
+    height: 48px;
+    top: 60px;
     right: 7px;
     position: absolute;
     font-family: 'IBM Plex Sans';
