@@ -68,7 +68,6 @@ let currentTime = new Date().toTimeString().split(' ')[0];
 const categories = [currentTime];
 
 export default {
-<<<<<<< HEAD
     name: 'Query',    
     components: {
         highcharts: Chart
@@ -128,40 +127,6 @@ export default {
                     width: 230 + 'px',
                     height: 200 + 'px',
                 },
-=======
-  props: ['stocks'],
-  name: 'Query',
-  components: {
-    highcharts: Chart
-  },
-  data() {
-    return {
-        aaa: '아아',
-        // stocks: [
-        //   { id: 1, name: '삼성전자', price: 62000, fluctuationRate: -1.58, marketCap: 520000000000, volume: 1000000 },
-        //   { id: 2, name: 'LG에너지솔루션', price: 516000, fluctuationRate: -3.19, marketCap: 80000000000, volume: 500000 },
-        //   { id: 3, name: 'SK하이닉스', price: 92500, fluctuationRate: 0.54, marketCap: 60000000000, volume: 200000 },
-        //   { id: 4, name: '삼성바이오로직스', price: 805000, fluctuationRate: 0.75, marketCap: 450000000000, volume: 300000 },
-        //   { id: 5, name: '삼성SDI', price: 692000, fluctuationRate: -1.56, marketCap: 450000000000, volume: 300000 },
-        //   { id: 6, name: 'LG화학', price: 667000, fluctuationRate: -3.19, marketCap: 450000000000, volume: 300000 },
-        //   { id: 7, name: '삼성전자우', price: 55900, fluctuationRate: 0.18, marketCap: 450000000000, volume: 300000 },
-        // ],
-        isPopupOpen: false,
-        chartOptions: {
-            chart: {
-                height: 200 + 'px'
-            },
-            title : {
-                text : "시각장애인을 위한 주식 차트 (실시간)",  
-                style : '10px'    
-            },
-            accessibility: {
-                announceNewData: {
-                    enabled: true
-                }
-            },
-            xAxis: {
->>>>>>> 41a8ba2bd3a0c832f6d107249402bfd8d9c4d70e
                 title: {
                     text: "실시간 차트",
                     style: "10px",
@@ -277,52 +242,7 @@ export default {
             return this.$store.state.stocks;
         }
     },
-<<<<<<< HEAD
     created() {},
-=======
-    up(){
-      let count = Number(document.getElementById("input-count").value)
-      let plusone = document.getElementById("plusone");
-      let up = document.querySelector("#plusone")
-      count = count + 1
-      document.getElementById("input-count").value = count 
-      plusone.setAttribute("aria-labelledby", "input-count")
-      up.classList.remove("aria-labelledby");
-    },
-    down(){
-      let count = Number(document.getElementById("input-count").value)
-      let minusone = document.getElementById("minusone");
-      let down = document.querySelector("#minusone")
-      if(count > 0){
-        count = count - 1
-        document.getElementById("input-count").value = count
-        minusone.setAttribute("aria-labelledby", "input-count")
-        down.classList.remove("aria-labelledby");
-      }
-    },
-    showBuyPopup() {
-      this.isPopupOpen = true;
-    },
-    showSellPopup() {
-        this.isPopupOpen = true;
-    },
-    onConfirm() {
-      // 구매 확인 로직
-      this.isPopupOpen = false;
-    },
-    onCancel() {
-      this.isPopupOpen = false;
-    },
-  },
-  computed: {
-    stocks() {
-        return this.$store.state.stocks;
-    }
-  },
-  created() {
-
-  }
->>>>>>> 41a8ba2bd3a0c832f6d107249402bfd8d9c4d70e
 }
 </script>
 
@@ -345,7 +265,6 @@ export default {
     left: 10px;
 }
 */
-
 .current-price {
     width: 40px;
     height: 20px;
