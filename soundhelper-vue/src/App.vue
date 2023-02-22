@@ -2,10 +2,6 @@
     <div id="app">
         <router-view/>
     </div>
-<<<<<<< HEAD
-  
-=======
->>>>>>> c6e88bc26a8cf020b2a30eea6626046a9d6d8956
 </template>
   
 <script>

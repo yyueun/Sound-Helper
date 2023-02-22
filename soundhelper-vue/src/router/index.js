@@ -3,6 +3,12 @@ import HomeView from '../views/HomeView.vue'
 import StockList from '../views/StockList.vue'
 import PopUp from '../views/PopUp.vue'
 import StockOrder from '../views/StockOrder.vue'
+// import VueRouter from 'vue-router'
+// import vue from 'vue'
+// vue.use(VueRouter)
+
+// import Query from '@/views/Query.vue'
+// import Params from '@/views/Params.vue'
 
 const routes = [
   {
@@ -16,9 +22,10 @@ const routes = [
     component: StockList
   },
   {
-    path: '/order',
-    name: 'order',
-    component: StockOrder
+    path: '/order/:name',
+    name: 'Query',
+    component: StockOrder,
+    props: true
   },
   {
     path: '/popup',
