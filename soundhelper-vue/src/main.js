@@ -9,5 +9,4 @@ import HighchartsVue from 'highcharts-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
-createApp(App).use(store).use(router).mount('#app').use(BootstrapVue3)
-Vue.use(HighchartsVue)
+createApp(App).use(store).use(router).use(BootstrapVue3).mount('#app')
