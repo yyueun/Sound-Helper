@@ -32,9 +32,9 @@
             <div style="height: 40px;"></div>
             <div id="count">
                 <!-- 플러스마이너스 버튼, 현재 수 -->
-                <button id="minusone" :style="{ 'background-color': '#FB5A6B' }" @click="down">-1</button>
+                <button id="minusone" :style="{ 'background-color': '#FB5A6B' }" @click="down">-</button>
                 <input id="input-count" type="text" v-model="count" placeholder="0">
-                <button id="plusone" :style="{ 'background-color': '#6F4BFD' }" @click="up">+1</button>
+                <button id="plusone" :style="{ 'background-color': '#6F4BFD' }" @click="up">+</button>
             </div>
             <div class="trade">
                 <!-- 구매 판매 버튼 -->
@@ -381,6 +381,7 @@ export default {
     height: 50px;
     border: none;
     font-size: 20px;
+    color: white;
 }
 
 .product {
@@ -397,6 +398,7 @@ export default {
     height: 50px;
     border: none;
     font-size: 20px;
+    color: white;
 }
 
 #input-count {
